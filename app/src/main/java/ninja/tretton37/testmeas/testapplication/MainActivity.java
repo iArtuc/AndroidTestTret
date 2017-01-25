@@ -29,6 +29,10 @@ public class MainActivity extends AppCompatActivity
     private ListView recipeList;
     private RecipeListCursorAdapter recipeListCursorAdapter;
     private MainActivityPresenter presenter;
+    private Cursor oldOne;
+    private Cursor newOne;
+    private SQLiteDatabase db;
+    private RecipeDbHelper handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     private void addItemToList()
     {
         //For test purpose;
-        startActivity(new Intent(this, NewRecipeActivity.class));
+        startActivityForResult(new Intent(this, NewRecipeActivity.class),1);
 
     }
 
@@ -78,21 +82,26 @@ public class MainActivity extends AppCompatActivity
     private void initAdapters()
     {
 
-        RecipeDbHelper handler = new RecipeDbHelper(this);
+        handler = new RecipeDbHelper(this);
         //For testing
 //        handler.add();
-        SQLiteDatabase db = handler.getWritableDatabase();
-        Cursor todoCursor = db.rawQuery("SELECT  * FROM " + TABLE_NAME, null);
-        RecipeListCursorAdapter todoAdapter = new RecipeListCursorAdapter(this, todoCursor, false);
-        recipeList.setAdapter(todoAdapter);
+        db = handler.getWritableDatabase();
+        oldOne = db.rawQuery("SELECT  * FROM " + TABLE_NAME, null);
+        recipeListCursorAdapter = new RecipeListCursorAdapter(this, oldOne, false);
+        recipeList.setAdapter(recipeListCursorAdapter);
 
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent intent) {
+                                    Intent intent)
+    {
         super.onActivityResult(requestCode, resultCode, intent);
+        newOne = db.rawQuery("SELECT  * FROM " + TABLE_NAME, null);
+        recipeListCursorAdapter.swapCursor(newOne);
+        recipeListCursorAdapter.notifyDataSetChanged();
+
     }
 
     private void initLayout()
