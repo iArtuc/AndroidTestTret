@@ -145,8 +145,11 @@ public class MainActivity extends AppCompatActivity
     {
         int id = item.getItemId();
         // TODO: Add a clear/empty database option instead
-        if (id == R.id.action_settings)
+        if (id == R.id.action_delete_db)
         {
+            db.delete(TABLE_NAME, null, null);
+            newOne = db.rawQuery("SELECT  * FROM " + TABLE_NAME, null);
+            recipeListCursorAdapter.swapCursor(newOne);
             return true;
         }
         return super.onOptionsItemSelected(item);
