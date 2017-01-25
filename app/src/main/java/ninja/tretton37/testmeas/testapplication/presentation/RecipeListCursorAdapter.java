@@ -40,13 +40,9 @@ public class RecipeListCursorAdapter extends CursorAdapter
     {
         // TODO: Implement using RepicViewHolder
         RecipeViewHolder viewHolder = (RecipeViewHolder) view.getTag();
-//        int titleCol = cursor.getColumnIndexOrThrow(Tasks.TITLE);
-//        int completedCol = cursor.getColumnIndexOrThrow(Tasks.COMPLETED);
-//
-//        String title = cursor.getString(titleCol);
-//        boolean completed = Util.intToBool(cursor.getInt(completedCol));
+
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
-        String info = cursor.getString(cursor.getColumnIndexOrThrow("info"));
+        String info = cursor.getString(cursor.getColumnIndexOrThrow("text"));
 
         viewHolder.getTitle().setText(title);
         viewHolder.getInfo().setText(info);

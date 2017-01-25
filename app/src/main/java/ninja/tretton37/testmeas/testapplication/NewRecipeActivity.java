@@ -11,8 +11,6 @@ import android.widget.EditText;
 import ninja.tretton37.testmeas.testapplication.data.RecipeContentProvider;
 import ninja.tretton37.testmeas.testapplication.data.RecipeContract;
 
-import static android.R.attr.category;
-
 /**
  * Created by ilkinartuc on 25/01/2017.
  */
@@ -24,6 +22,7 @@ public class NewRecipeActivity extends AppCompatActivity
 
     private Uri recipeURI;
 
+    private RecipeContentProvider recipeContentProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -71,7 +70,6 @@ public class NewRecipeActivity extends AppCompatActivity
         if (recipeURI == null)
         {
             // New recipe
-            //ToDo Check it if causes crashes
             recipeURI = getContentResolver().insert(
                     RecipeContentProvider.CONTENT_URI, values);
         } else

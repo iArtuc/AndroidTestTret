@@ -34,7 +34,7 @@
 
         <provider
             android:name=".data.RecipeContentProvider"
-            android:authorities="recipes.testmeas.tretton37.ninja"
+            android:authorities="ninja.tretton37.testmeas.testapplication.data"
             android:enabled="true"
             android:exported="false"></provider>
     </application>

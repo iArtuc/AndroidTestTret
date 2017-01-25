@@ -79,13 +79,20 @@ public class MainActivity extends AppCompatActivity
     {
 
         RecipeDbHelper handler = new RecipeDbHelper(this);
-        handler.add();
+        //For testing
+//        handler.add();
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor todoCursor = db.rawQuery("SELECT  * FROM " + TABLE_NAME, null);
         RecipeListCursorAdapter todoAdapter = new RecipeListCursorAdapter(this, todoCursor, false);
         recipeList.setAdapter(todoAdapter);
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
     }
 
     private void initLayout()

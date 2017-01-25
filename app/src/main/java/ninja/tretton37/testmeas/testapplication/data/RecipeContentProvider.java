@@ -3,6 +3,7 @@ package ninja.tretton37.testmeas.testapplication.data;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,7 +28,7 @@ public class RecipeContentProvider extends ContentProvider
     private static final int RECIPE_ID = 2;
 
     private static final String AUTHORITY = "ninja.tretton37.testmeas.testapplication.data";
-    private static final String BASE_PATH = "recipe";
+    private static final String BASE_PATH = "recipes";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
             + "/" + BASE_PATH);
 
@@ -46,6 +47,7 @@ public class RecipeContentProvider extends ContentProvider
         sUriMatcher.addURI(AUTHORITY, BASE_PATH + "/#", RECIPE_ID);
     }
 
+
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs)
     {
@@ -53,19 +55,22 @@ public class RecipeContentProvider extends ContentProvider
         int uriType = sUriMatcher.match(uri);
         SQLiteDatabase sqlDB = mOpenHelper.getWritableDatabase();
         int rowsDeleted = 0;
-        switch (uriType) {
+        switch (uriType)
+        {
             case RECIPES:
                 rowsDeleted = sqlDB.delete(RecipeContract.RecipeEntry.TABLE_NAME, selection,
                         selectionArgs);
                 break;
             case RECIPE_ID:
                 String id = uri.getLastPathSegment();
-                if (TextUtils.isEmpty(selection)) {
+                if (TextUtils.isEmpty(selection))
+                {
                     rowsDeleted = sqlDB.delete(
                             RecipeContract.RecipeEntry.TABLE_NAME,
                             RecipeContract.RecipeEntry.COLUMN_ID + "=" + id,
                             null);
-                } else {
+                } else
+                {
                     rowsDeleted = sqlDB.delete(
                             RecipeContract.RecipeEntry.TABLE_NAME,
                             RecipeContract.RecipeEntry.COLUMN_ID + "=" + id
@@ -95,14 +100,14 @@ public class RecipeContentProvider extends ContentProvider
         int uriType = sUriMatcher.match(uri);
         SQLiteDatabase sqlDB = mOpenHelper.getWritableDatabase();
         long id = 0;
-        switch (uriType) {
+        switch (uriType)
+        {
             case RECIPES:
                 id = sqlDB.insert(RecipeContract.RecipeEntry.TABLE_NAME, null, values);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
-
 
 
         getContext().getContentResolver().notifyChange(uri, null);
@@ -114,8 +119,17 @@ public class RecipeContentProvider extends ContentProvider
     @Override
     public boolean onCreate()
     {
-        mOpenHelper = new RecipeDbHelper(getContext());
-        return true;
+//        mOpenHelper = new RecipeDbHelper(getContext());
+        Context context = getContext();
+        mOpenHelper = new RecipeDbHelper(context);
+
+        /**
+         * Create a write able database which will trigger its
+         * creation if it doesn't already exist.
+         */
+
+        mDb = mOpenHelper.getWritableDatabase();
+        return mDb != null;
     }
 
     @Override
@@ -131,7 +145,8 @@ public class RecipeContentProvider extends ContentProvider
 
 
         int uriType = sUriMatcher.match(uri);
-        switch (uriType) {
+        switch (uriType)
+        {
             case RECIPES:
                 break;
             case RECIPE_ID:
