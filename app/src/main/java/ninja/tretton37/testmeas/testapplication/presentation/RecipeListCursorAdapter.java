@@ -46,7 +46,6 @@ public class RecipeListCursorAdapter extends CursorAdapter
 //        String title = cursor.getString(titleCol);
 //        boolean completed = Util.intToBool(cursor.getInt(completedCol));
 
-
         viewHolder.getTitle().setText("test");
         viewHolder.getInfo().setText("infotest");
     }

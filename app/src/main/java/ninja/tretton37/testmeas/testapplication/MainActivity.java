@@ -2,7 +2,6 @@ package ninja.tretton37.testmeas.testapplication;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,15 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import ninja.tretton37.testmeas.testapplication.presentation.MainActivityPresenter;
 import ninja.tretton37.testmeas.testapplication.presentation.MainActivityPresenterImpl;
+import ninja.tretton37.testmeas.testapplication.presentation.RecipeListCursorAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainActivityView
 {
     private ListView recipeList;
+    private RecipeListCursorAdapter recipeListCursorAdapter;
     private MainActivityPresenter presenter;
 
     @Override
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity
 
     private void initAdapters()
     {
+
+//        setListAdapter(adapter);
     }
 
     private void initLayout()
