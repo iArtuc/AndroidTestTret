@@ -24,6 +24,7 @@ import ninja.tretton37.testmeas.testapplication.presentation.MainActivityPresent
 import ninja.tretton37.testmeas.testapplication.presentation.MainActivityPresenterImpl;
 import ninja.tretton37.testmeas.testapplication.presentation.RecipeListCursorAdapter;
 
+import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.COLUMN_NAME_TITLE;
 import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.TABLE_NAME;
 
 public class MainActivity extends AppCompatActivity
@@ -71,15 +72,7 @@ public class MainActivity extends AppCompatActivity
 
     private void addItemToList()
     {
-        //For test purpose;
         startActivityForResult(new Intent(this, NewRecipeActivity.class), 1);
-
-    }
-
-    private void updateItemInList()
-    {
-
-        //start activity with result with uri;
     }
 
     private void initAdapters()
@@ -118,9 +111,7 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(getApplicationContext(), NewRecipeActivity.class);
                 Uri todoUri = Uri.parse(RecipeContentProvider.CONTENT_URI + "/" + id);
                 intent.putExtra(RecipeContentProvider.CONTENT_ITEM_TYPE, todoUri);
-                intent.putExtra("RecipeID",id);
-
-                // Activity returns an result if called with startActivityForResult
+                intent.putExtra("RecipeID", id);
                 startActivityForResult(intent, 2);
             }
         });
@@ -169,6 +160,11 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_view_all)
         {
             // TODO: show a list of all, sorted by title
+            newOne = db.rawQuery("SELECT  * FROM " + TABLE_NAME + " ORDER BY " +
+                            COLUMN_NAME_TITLE + " ASC",
+                    null);
+            recipeListCursorAdapter.swapCursor(newOne);
+
         } else if (id == R.id.nav_search)
         {
             // TODO: Let the user search by full text
