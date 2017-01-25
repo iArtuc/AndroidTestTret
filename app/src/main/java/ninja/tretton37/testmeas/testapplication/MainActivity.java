@@ -2,6 +2,7 @@ package ninja.tretton37.testmeas.testapplication;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,14 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
+import ninja.tretton37.testmeas.testapplication.data.RecipeDbHelper;
 import ninja.tretton37.testmeas.testapplication.presentation.MainActivityPresenter;
 import ninja.tretton37.testmeas.testapplication.presentation.MainActivityPresenterImpl;
 import ninja.tretton37.testmeas.testapplication.presentation.RecipeListCursorAdapter;
 
-import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.COLUMN_NAME_TEXT;
-import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.COLUMN_NAME_TITLE;
+import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.TABLE_NAME;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainActivityView
@@ -77,6 +77,14 @@ public class MainActivity extends AppCompatActivity
 
     private void initAdapters()
     {
+
+        RecipeDbHelper handler = new RecipeDbHelper(this);
+        handler.add();
+        SQLiteDatabase db = handler.getWritableDatabase();
+        Cursor todoCursor = db.rawQuery("SELECT  * FROM " + TABLE_NAME, null);
+        RecipeListCursorAdapter todoAdapter = new RecipeListCursorAdapter(this, todoCursor, false);
+        recipeList.setAdapter(todoAdapter);
+
 
     }
 

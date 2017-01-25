@@ -15,7 +15,7 @@ public class RecipeContract
             + "("
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME_TEXT + " text not null, "
-            + COLUMN_NAME_TITLE + " text not null,"
+            + COLUMN_NAME_TITLE + " text not null"
             + ");";
 
 

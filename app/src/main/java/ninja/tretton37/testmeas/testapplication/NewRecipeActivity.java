@@ -71,7 +71,6 @@ public class NewRecipeActivity extends AppCompatActivity
         if (recipeURI == null)
         {
             // New recipe
-
             //ToDo Check it if causes crashes
             recipeURI = getContentResolver().insert(
                     RecipeContentProvider.CONTENT_URI, values);
