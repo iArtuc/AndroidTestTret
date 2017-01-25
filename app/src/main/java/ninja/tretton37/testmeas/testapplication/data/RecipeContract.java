@@ -34,7 +34,7 @@ public class RecipeContract
         onCreate(database);
     }
 
-    static class RecipeEntry implements BaseColumns
+    public static class RecipeEntry implements BaseColumns
     {
         public static final String TABLE_NAME = "recipes";
         public static final String COLUMN_ID = "_id";

@@ -28,6 +28,13 @@ public class RecipeContentProvider extends ContentProvider
 
     private static final String AUTHORITY = "ninja.tretton37.testmeas.testapplication.data";
     private static final String BASE_PATH = "recipe";
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
+            + "/" + BASE_PATH);
+
+    public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
+            + "/recipes";
+    public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
+            + "/recipe";
 
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);

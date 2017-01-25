@@ -1,6 +1,7 @@
 package ninja.tretton37.testmeas.testapplication;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -13,10 +14,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import ninja.tretton37.testmeas.testapplication.presentation.MainActivityPresenter;
 import ninja.tretton37.testmeas.testapplication.presentation.MainActivityPresenterImpl;
 import ninja.tretton37.testmeas.testapplication.presentation.RecipeListCursorAdapter;
+
+import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.COLUMN_NAME_TEXT;
+import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.COLUMN_NAME_TITLE;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainActivityView
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity
             {
                 // TODO: Add a new recipe
                 addItemToList();
-                throw new UnsupportedOperationException("Not yet implemented");
+//                throw new UnsupportedOperationException("Not yet implemented");
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -60,8 +65,14 @@ public class MainActivity extends AppCompatActivity
     private void addItemToList()
     {
         //For test purpose;
-        startActivity(new Intent(this, NewRecipeActivity.class);
+        startActivity(new Intent(this, NewRecipeActivity.class));
 
+    }
+
+    private void updateItemInList()
+    {
+
+        //start activity with result with uri;
     }
 
     private void initAdapters()
@@ -72,6 +83,8 @@ public class MainActivity extends AppCompatActivity
     private void initLayout()
     {
         recipeList = (ListView) findViewById(R.id.lv_main_activity_recipe_list);
+
+
     }
 
     @Override
