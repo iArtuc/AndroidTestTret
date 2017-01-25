@@ -1,6 +1,7 @@
 package ninja.tretton37.testmeas.testapplication;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ninja.tretton37.testmeas.testapplication.data.RecipeContentProvider;
-import ninja.tretton37.testmeas.testapplication.data.RecipeContract;
+
+import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.COLUMN_NAME_TEXT;
+import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.COLUMN_NAME_TITLE;
 
 /**
  * Created by ilkinartuc on 25/01/2017.
@@ -19,8 +22,10 @@ public class NewRecipeActivity extends AppCompatActivity
     private EditText txtTitle;
     private EditText txtInfo;
     private Button save;
+    private Button delete;
 
     private Uri recipeURI;
+    private long recipeID = -1;
 
     private RecipeContentProvider recipeContentProvider;
 
@@ -30,12 +35,57 @@ public class NewRecipeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newrecipe);
 
+        initLayout();
+        clickListeners();
+
+
         Bundle extras = getIntent().getExtras();
         recipeURI = (savedInstanceState == null) ? null : (Uri) savedInstanceState
                 .getParcelable(RecipeContentProvider.CONTENT_ITEM_TYPE);
 
-        initLayout();
+        if (extras != null)
+        {
+            recipeURI = extras
+                    .getParcelable(RecipeContentProvider.CONTENT_ITEM_TYPE);
+            recipeID = getIntent().getLongExtra("RecipeID", -1);
+            fillLayoutData(recipeURI);
+        }
 
+        if (recipeURI == null)
+        {
+            delete.setEnabled(false);
+        } else
+        {
+            delete.setEnabled(true);
+        }
+
+
+    }
+
+    private void fillLayoutData(Uri recipeURI)
+    {
+        String[] projection = {COLUMN_NAME_TEXT,
+                COLUMN_NAME_TITLE};
+        Cursor cursor = getContentResolver().query(recipeURI, projection, null, null,
+                null);
+        if (cursor != null)
+        {
+            cursor.moveToFirst();
+            String title = cursor.getString(cursor
+                    .getColumnIndexOrThrow(COLUMN_NAME_TITLE));
+            String text = cursor.getString(cursor
+                    .getColumnIndexOrThrow(COLUMN_NAME_TEXT));
+
+            txtTitle.setText(title);
+            txtInfo.setText(text);
+
+
+            cursor.close();
+        }
+    }
+
+    private void clickListeners()
+    {
         save.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -53,7 +103,23 @@ public class NewRecipeActivity extends AppCompatActivity
 
 
         });
+        delete.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                deleteInfo();
+            }
+        });
+    }
 
+    private void deleteInfo()
+    {
+        Uri uri = Uri.parse(RecipeContentProvider.CONTENT_URI + "/"
+                + recipeID);
+        getContentResolver().delete(uri, null, null);
+        setResult(RESULT_OK);
+        finish();
     }
 
     private void saveInfo()
@@ -64,8 +130,8 @@ public class NewRecipeActivity extends AppCompatActivity
 
 
         ContentValues values = new ContentValues();
-        values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE, txtTitle.getText().toString());
-        values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TEXT, txtInfo.getText().toString());
+        values.put(COLUMN_NAME_TITLE, txtTitle.getText().toString());
+        values.put(COLUMN_NAME_TEXT, txtInfo.getText().toString());
 
         if (recipeURI == null)
         {
@@ -86,6 +152,7 @@ public class NewRecipeActivity extends AppCompatActivity
     private void initLayout()
     {
         save = (Button) findViewById(R.id.btn_activty_newrecipe_save);
+        delete = (Button) findViewById(R.id.btn_activty_newrecipe_delete);
         txtInfo = (EditText) findViewById(R.id.et_activity_newrecipe_info);
         txtTitle = (EditText) findViewById(R.id.et_activity_newrecipe_title);
     }

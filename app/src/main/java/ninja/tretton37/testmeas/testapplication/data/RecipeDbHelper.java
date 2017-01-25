@@ -1,13 +1,8 @@
 package ninja.tretton37.testmeas.testapplication.data;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.COLUMN_NAME_TEXT;
-import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.COLUMN_NAME_TITLE;
-import static ninja.tretton37.testmeas.testapplication.data.RecipeContract.RecipeEntry.TABLE_NAME;
 
 
 public class RecipeDbHelper extends SQLiteOpenHelper
@@ -33,14 +28,4 @@ public class RecipeDbHelper extends SQLiteOpenHelper
         RecipeContract.onUpgrade(db, oldVersion, newVersion);
     }
 
-    public boolean add()
-    {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME_TEXT, "test purpose info");
-        values.put(COLUMN_NAME_TITLE, "test purpose title");
-        sqLiteDatabase.insert(TABLE_NAME, null, values);
-        return true;
-
-    }
 }

@@ -3,6 +3,7 @@ package ninja.tretton37.testmeas.testapplication;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,8 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import ninja.tretton37.testmeas.testapplication.data.RecipeContentProvider;
 import ninja.tretton37.testmeas.testapplication.data.RecipeDbHelper;
 import ninja.tretton37.testmeas.testapplication.presentation.MainActivityPresenter;
 import ninja.tretton37.testmeas.testapplication.presentation.MainActivityPresenterImpl;
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     private void addItemToList()
     {
         //For test purpose;
-        startActivityForResult(new Intent(this, NewRecipeActivity.class),1);
+        startActivityForResult(new Intent(this, NewRecipeActivity.class), 1);
 
     }
 
@@ -107,9 +110,24 @@ public class MainActivity extends AppCompatActivity
     private void initLayout()
     {
         recipeList = (ListView) findViewById(R.id.lv_main_activity_recipe_list);
+        recipeList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long id)
+            {
+                Intent intent = new Intent(getApplicationContext(), NewRecipeActivity.class);
+                Uri todoUri = Uri.parse(RecipeContentProvider.CONTENT_URI + "/" + id);
+                intent.putExtra(RecipeContentProvider.CONTENT_ITEM_TYPE, todoUri);
+                intent.putExtra("RecipeID",id);
+
+                // Activity returns an result if called with startActivityForResult
+                startActivityForResult(intent, 2);
+            }
+        });
 
 
     }
+
 
     @Override
     public void onBackPressed()
@@ -159,4 +177,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

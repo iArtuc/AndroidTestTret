@@ -13,6 +13,7 @@ import ninja.tretton37.testmeas.testapplication.R;
 
 public class RecipeListCursorAdapter extends CursorAdapter
 {
+
     public RecipeListCursorAdapter(Context context, Cursor c, boolean autoRequery)
     {
         super(context, c, autoRequery);
@@ -43,6 +44,7 @@ public class RecipeListCursorAdapter extends CursorAdapter
 
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
         String info = cursor.getString(cursor.getColumnIndexOrThrow("text"));
+        int id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
 
         viewHolder.getTitle().setText(title);
         viewHolder.getInfo().setText(info);

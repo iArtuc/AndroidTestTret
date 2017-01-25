@@ -21,4 +21,11 @@
         android:text="save"
         android:layout_height="50dp"/>
 
+
+    <Button
+        android:id="@+id/btn_activty_newrecipe_delete"
+        android:layout_width="100dp"
+        android:text="delete"
+        android:layout_height="50dp"/>
+
 </LinearLayout>
